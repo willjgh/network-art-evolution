@@ -6,7 +6,7 @@ rng = np.random.default_rng()
 
 class Model():
 
-    def __init__(self, widths=[3, 3], input_width=2, output_width=3):
+    def __init__(self, widths=[3, 3, 3], input_width=2, output_width=3):
         '''Initialize'''
         self.weights = []
         self.biases = []
@@ -49,8 +49,9 @@ class Model():
                 # final layer: sigmoid
                 self.activations.append(self.sigmoid)
             else:
-                # otherwise: relu
-                self.activations.append(self.softplus)
+                # otherwise: random
+                activation = rng.choice([self.softplus, self.relu, np.sin, np.cos])
+                self.activations.append(activation)
 
     def forward(self, x):
         '''Forward pass over model with input x.'''
