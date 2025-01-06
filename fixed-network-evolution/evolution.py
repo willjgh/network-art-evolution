@@ -9,6 +9,7 @@ population.initialize()
 
 # create a display
 display = Display(grid_size=num)
+display.tick = 0
 
 while display.running:
 

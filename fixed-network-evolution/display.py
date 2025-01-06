@@ -25,6 +25,7 @@ class Display():
         # pygame settings
         pygame.display.set_caption("Model evolution")
         self.clock = pygame.time.Clock()
+        self.tick = 1
 
         # state
         self.running = True
@@ -74,7 +75,7 @@ class Display():
         '''Draw outputs of a population to the screen.'''
 
         # set refresh rate
-        #self.clock.tick(1)
+        self.clock.tick(self.tick)
 
         # for each model / canvas
         for k in range(self.grid_size**2):
