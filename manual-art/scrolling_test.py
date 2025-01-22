@@ -8,8 +8,8 @@ import copy
 pygame.init()
 
 # window: high resolution, display on screen
-window_width = 1000
-window_height = 1000
+window_width = 500
+window_height = 500
 window = pygame.display.set_mode((window_width, window_height))
 
 # canvas: low resolution, draw on then draw to window
@@ -18,7 +18,7 @@ canvas_height = 64
 canvas = pygame.Surface((canvas_width, canvas_height))
 
 # pygame settings
-pygame.display.set_caption("Scrolling")
+pygame.display.set_caption("Scrolling Image")
 clock = pygame.time.Clock()
 
 # script settings

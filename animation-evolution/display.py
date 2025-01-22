@@ -12,8 +12,8 @@ class Display():
         pygame.init()
 
         # window: high resolution, display on screen
-        self.window_width = 1000
-        self.window_height = 1000
+        self.window_width = 500
+        self.window_height = 500
         self.window = pygame.display.set_mode((self.window_width, self.window_height))
 
         # canvas: low resolution, draw on then draw to window
