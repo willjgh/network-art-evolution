@@ -28,6 +28,7 @@ class Population():
         # store mutated parameters
         weights_mut = []
         biases_mut = []
+        activations_mut = []
         
         # mutate weight matrices
         for weight in model.weights:
@@ -59,12 +60,29 @@ class Population():
             # store
             biases_mut.append(bias_new)
 
+        # mutate activations
+        for activation in model.activations:
+
+            '''removed for now: causes issues with extreme brightness of colours'''
+            # mutate activation
+            if rng.uniform() < 0: #self.mutation_rate:
+
+                # sample random function from those available
+                mut = rng.choice(model.activations_available)
+                activations_mut.append(mut)
+
+            # or keep same
+            else:
+                
+                activations_mut.append(activation)
+
         # create a copy of model
         model_mut = copy.deepcopy(model)
 
         # set to mutated parameters
         model_mut.weights = weights_mut
         model_mut.biases = biases_mut
+        model_mut.activations = activations_mut
 
         # return mutated model
         return model_mut
@@ -75,6 +93,7 @@ class Population():
         # store crossed parameters
         weights_cross = []
         biases_cross = []
+        activations_cross = []
         
         # crossover each weight matrix
         for weight_1, weight_2 in zip(model_1.weights, model_2.weights):
@@ -113,12 +132,25 @@ class Population():
             # store
             biases_cross.append(bias_new)
 
+        # crossover each activation
+        for activation_1, activation_2 in zip(model_1.activations, model_2.activations):
+
+            # randomly pick activations from each model
+            if rng.uniform() < 0.5:
+
+                activations_cross.append(activation_1)
+            
+            else:
+                
+                activations_cross.append(activation_2)
+
         # create a copy of model_1
         model_cross = copy.deepcopy(model_1)
 
         # set to crossover parameters
         model_cross.weights = weights_cross
         model_cross.biases = biases_cross
+        model_cross.activations = activations_cross
 
         # return crossed model
         return model_cross
