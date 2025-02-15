@@ -15,7 +15,7 @@ while display.running:
 
     display.event_handler()
 
-    display.draw(population.population)
+    display.draw_batch(population.population)
 
     # user action prompts new generation
     if display.action:
