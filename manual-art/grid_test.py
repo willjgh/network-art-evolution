@@ -7,8 +7,8 @@ import numpy as np
 pygame.init()
 
 # window: high resolution, display on screen
-window_width = 1000
-window_height = 1000
+window_width = 500
+window_height = 500
 window = pygame.display.set_mode((window_width, window_height))
 
 # canvas: low resolution, draw on then draw to window
@@ -18,7 +18,7 @@ size = 3
 canvas_list = [pygame.Surface((canvas_width, canvas_height)) for i in range(size**2)]
 
 # pygame settings
-pygame.display.set_caption("Random generation")
+pygame.display.set_caption("Network Art Grid")
 clock = pygame.time.Clock()
 
 # script settings
