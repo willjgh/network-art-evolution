@@ -47,7 +47,7 @@ class Display():
                 if event.key == pygame.K_SPACE:
                     self.action = True
 
-            elif event.type == pygame.MOUSEBUTTONUP:
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 # get mouse position
                 x, y = pygame.mouse.get_pos()
                 
@@ -69,6 +69,53 @@ class Display():
                     self.selected.remove(idx)
                 else:
                     self.selected.append(idx)
+
+
+    def draw_batch(self, population):
+        '''Draw outputs of a population to the screen using a batched approach.'''
+
+        # set refresh rate
+        self.clock.tick(self.tick)
+
+        # for each model / canvas
+        for k in range(self.grid_size**2):
+
+            # get model
+            model = population[k]
+
+            # get canvas
+            canvas = self.canvas_list[k]
+
+            # get model output over pixel grid
+            colour_array = model.colour_batch(self.canvas_height, self.canvas_width)
+
+            # darken if selected model
+            if k in self.selected:
+                colour_array = colour_array // 2
+
+            # blit colour array to canvas
+            pygame.surfarray.blit_array(canvas, colour_array)
+
+        # blit each canvas to section on window
+        for i in range(self.grid_size):
+            for j in range(self.grid_size):
+                canvas = self.canvas_list[i*self.grid_size + j]
+                self.window.blit(
+                    pygame.transform.scale(
+                        canvas,
+                        (
+                            self.window_width // self.grid_size - 1,
+                            self.window_height // self.grid_size - 1
+                        )
+                    ),
+                    (
+                        j * (self.window_width // self.grid_size),
+                        i * (self.window_height // self.grid_size)
+                    )
+                )
+
+        # update display
+        pygame.display.flip()
 
 
     def draw(self, population):
