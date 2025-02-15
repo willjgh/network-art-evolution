@@ -31,9 +31,18 @@ class Model():
     def relu(self, x):
         '''ReLu activation function'''
         return np.maximum(x, 0)
+    
+    def radial(self, x):
+        '''Radial activation function'''
+        return self.softplus(x - np.mean(x))
 
     def initialize_parameters(self):
         '''Initialize model parameters with uniformly distributed values.'''
+
+        # activation options
+        self.activations_available = [self.radial, self.softplus, self.sigmoid, self.relu, np.sin, np.cos]
+
+        # for each layer
         for i in range(1, self.depth):
 
             # parameter sizes
@@ -50,7 +59,7 @@ class Model():
                 self.activations.append(self.sigmoid)
             else:
                 # otherwise: random
-                activation = rng.choice([self.softplus, self.relu, np.sin, np.cos])
+                activation = rng.choice(self.activations_available)
                 self.activations.append(activation)
 
     def forward(self, x):
@@ -58,7 +67,7 @@ class Model():
 
         # pass x through network layers
         for i in range(self.depth - 1):
-            x = self.weights[i] @ x + self.biases[i]
+            x = self.weights[i] @ x + self.biases[i][:, None]
             x = self.activations[i](x)
 
         return x
@@ -77,3 +86,23 @@ class Model():
 
         # return tuple
         return (red, green, blue)
+    
+    def colour_batch(self, height, width):
+        '''Get colour given array of pixels.'''
+
+        # array of coordinates in batch as 2 x (height * width) array
+        x = np.array([(i, j) for i in range(height) for j in range(width)]).T
+        
+        # pass through model
+        model_output = self.forward(x)
+
+        # reshape to grid
+        model_output = model_output.reshape(3, height, width)
+
+        # move RGB dimension to last
+        colours = np.transpose(model_output, (1, 2, 0))
+
+        # convert to int [0, 255]
+        colours = (colours * 255).astype(np.int32)
+
+        return colours
